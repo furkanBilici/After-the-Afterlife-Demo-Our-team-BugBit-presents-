@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
+
 
 public class MovingP : MonoBehaviour
 {
-    private Vector3 initialPosition;
+
     float targetX;
     float targetY;
     public Transform targetPosition;
@@ -20,25 +20,22 @@ public class MovingP : MonoBehaviour
     bool isCharacterTouching;
     public bool finished;
     public Vector3 StartPosition;
-
-    private void Awake()
-    {
-        transform.position = StartPosition;
-    }
+    public float time=0;
+    
     void Start()
     {
-        Debug.Log("bok");
+        time = 0;
         if (stage == 1)
         {
             finished = false;
             canMove = false;
-            initialPosition = transform.position;
             targetX = targetPosition.position.x;
             targetY = targetPosition.position.y;
         }
     }
     private void Update()
     {
+        time+=Time.deltaTime;
         if (targetPosition.position == transform.position) { finished = true; }
     }
     void FixedUpdate()
@@ -105,8 +102,8 @@ public class MovingP : MonoBehaviour
     }*/
     void MoveX2()
     {
-        float x = Mathf.Cos(Time.time) * speed;
-
+        float x = Mathf.Cos(time) * speed;
+        
         Vector3 yeniPozisyon = new Vector3(this.transform.position.x + x, this.transform.position.y, this.transform.position.z);
         transform.position = yeniPozisyon;
         if (isCharacterTouching)
@@ -130,7 +127,5 @@ public class MovingP : MonoBehaviour
         }
         
     }
-
-   
 
 }

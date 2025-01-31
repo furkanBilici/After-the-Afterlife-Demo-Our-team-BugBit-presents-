@@ -17,6 +17,7 @@ public class HellDemoManagement : MonoBehaviour
     public GameObject BackgroundMusic;
     public GameObject ONCanvas;
     public GameObject OFFCanvas;
+    public GameObject destroyN;
     void Start()
     {
 
@@ -53,6 +54,14 @@ public class HellDemoManagement : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
+        foreach (var _object in reloadNeed)
+        {
+            _object.yeniden();
+            if (_object.gameObject.GetComponent<Rigidbody2D>() != null)
+            {
+                _object.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+            }
+        }
     }
     public void Quit()
     {
@@ -65,8 +74,11 @@ public class HellDemoManagement : MonoBehaviour
         {
             foreach (var _object in reloadNeed)
             {
-                _object.yeniden();
-                _object.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                if (_object.gameObject.GetComponent<Rigidbody2D>() != null)
+                {
+                    _object.yeniden();
+                    _object.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                }
             }
             Character.GetComponent<MovementPlayer>().IsDead = false;
             Time.timeScale = 1;
@@ -87,6 +99,7 @@ public class HellDemoManagement : MonoBehaviour
     }
     public void ReloadScene()
     {
+        Destroy(destroyN);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public IEnumerator FinishDemo()
